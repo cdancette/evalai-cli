@@ -210,7 +210,10 @@ def participate(ctx, team):
 @click.option(
     "--file", type=click.File("rb"), help="File path to the submission file"
 )
-def submit(ctx, file):
+@click.option(
+    "--method-name"
+)
+def submit(ctx, file, method_name=None):
     """
     Make submission to a challenge.
     """
@@ -219,9 +222,12 @@ def submit(ctx, file):
     """
     submission_metadata = {}
     if click.confirm("Do you want to include the Submission Details?"):
-        submission_metadata["method_name"] = click.prompt(
-            style("Method Name", fg="yellow"), type=str, default=""
-        )
+        if method_name is None:
+            submission_metadata["method_name"] = click.prompt(
+                style("Method Name", fg="yellow"), type=str, default=""
+            )
+        else:
+            submission_metadata["method_name"] = method_name
         submission_metadata["method_description"] = click.prompt(
             style("Method Description", fg="yellow"), type=str, default=""
         )
